@@ -250,23 +250,28 @@ func (s *TransactionManager) processSend(
 }
 
 func (s *TransactionManager) receive(w http.ResponseWriter, req *http.Request) {
+	log.Warn("receive: request start")
 	var receiveReq api.ReceiveRequest
 	err := json.NewDecoder(req.Body).Decode(&receiveReq)
 	req.Body.Close()
 	if err != nil {
 		invalidBody(w, req, err)
+		log.Warn("receive: error decoding request", "w", w, "req", req, "err", err)
 		return
 	}
 
 	var payload []byte
+	log.Warn("receive: calling s.processReceive", "w", w, "req", req, "receiveReq.Key", receiveReq.Key, "receiveReq.To", receiveReq.To)
 	payload, err = s.processReceive(w, req, receiveReq.Key, receiveReq.To)
 
 	if err != nil {
+		log.Warn("receive: error processing", "err", err)
 		badRequest(w,
 			fmt.Sprintf("Unable to retrieve payload for key: %s, error: %s\n",
 				receiveReq.Key, err))
 	} else {
 		encodedPayload := base64.StdEncoding.EncodeToString(payload)
+		log.Warn("receive: payload retrieved successfully", "payload", payload, "encodedPayload", encodedPayload)
 		sendResp := api.ReceiveResponse{Payload: encodedPayload}
 		json.NewEncoder(w).Encode(sendResp)
 		w.Header().Set("Content-Type", "application/json")
@@ -274,8 +279,10 @@ func (s *TransactionManager) receive(w http.ResponseWriter, req *http.Request) {
 }
 
 func (s *TransactionManager) receiveRaw(w http.ResponseWriter, req *http.Request) {
+	log.Warn("receiveRaw: request start")
 
 	key := req.Header.Get(hKey)
+	log.Warn("receiveRaw: key retrieved", "key", key)
 	if key == "" {
 		badRequest(w, "key not specified")
 		return
@@ -283,12 +290,15 @@ func (s *TransactionManager) receiveRaw(w http.ResponseWriter, req *http.Request
 
 	to := req.Header.Get(hTo)
 
+	log.Warn("receiveRaw: calling s.processReceive", "w", w, "req", req, "key", key, "to", to)
 	payload, err := s.processReceive(w, req, key, to)
 
 	if err != nil {
 		badRequest(w, fmt.Sprintln(err))
+		log.Warn("receiveRaw: s.processReceive error", "err", err)
 		return
 	}
+	log.Warn("receiveRaw: s.processReceive complete", "payload", payload)
 
 	w.Write(payload)
 }
@@ -298,17 +308,21 @@ func (s *TransactionManager) processReceive(
 
 	key, err := base64.StdEncoding.DecodeString(b64Key)
 	if err != nil {
+		log.Warn("processReceive: error decoding key", "err", err)
 		return nil, fmt.Errorf("unable to decode key: %s", b64Key)
 	}
 
 	if b64To != "" {
 		to, err := base64.StdEncoding.DecodeString(b64To)
 		if err != nil {
+			log.Warn("processReceive: error decoding to", "err", err)
 			return nil, fmt.Errorf("unable to decode to: %s", b64Key)
 		}
 
+		log.Warn("processReceive: calling s.Enclave.Retrieve")
 		return s.Enclave.Retrieve(&key, &to)
 	} else {
+		log.Warn("processReceive: calling s.Enclave.RetrieveDefault")
 		return s.Enclave.RetrieveDefault(&key)
 	}
 }

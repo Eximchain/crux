@@ -146,7 +146,7 @@ func (s *SecureEnclave) store(
 	} else {
 		toSelf = false
 	}
-	
+
 	epl, masterKey := createEncryptedPayload(message, senderPubKey, recipients)
 
 	for i, recipient := range recipients {
@@ -319,10 +319,13 @@ func (s *SecureEnclave) Retrieve(digestHash *[]byte, to *[]byte) ([]byte, error)
 
 	encoded, err := s.Db.Read(digestHash)
 	if err != nil {
+		log.Warn("Retrieve: error calling s.Db.Read(digestHash)", "err", err)
 		return nil, err
 	}
+	log.Warn("Retrieve: called s.Db.Read(digestHash)", "encoded", encoded)
 
 	epl, recipients := api.DecodePayloadWithRecipients(*encoded)
+	log.Warn("Retrieve: called api.DecodePayloadWithRecipients(*encoded)", "epl", epl, "recipients", recipients)
 
 	masterKey := new([nacl.KeySize]byte)
 
@@ -330,40 +333,53 @@ func (s *SecureEnclave) Retrieve(digestHash *[]byte, to *[]byte) ([]byte, error)
 
 	if len(recipients) == 0 {
 		// This is a payload originally sent to us by another node
+		log.Warn("Retrieve: payload from other node")
 		recipientPubKey = epl.Sender
 		senderPubKey, err = utils.ToKey(*to)
 		if err != nil {
+			log.Warn("Retrieve: error retrieving key with utils.ToKey", "recipientPubKey", recipientPubKey, "err", err)
 			return nil, err
 		}
+		log.Warn("Retrieve: success retrieving key with utils.ToKey", "recipientPubKey", recipientPubKey, "senderPubKey", senderPubKey)
 	} else {
 		// This is a payload that originated from us
+		log.Warn("Retrieve: payload from this node")
 		senderPubKey = epl.Sender
 		recipientPubKey, err = utils.ToKey(recipients[0])
 		if err != nil {
+			log.Warn("Retrieve: error retrieving key with utils.ToKey", "recipientPubKey", recipientPubKey, "err", err)
 			return nil, err
 		}
+		log.Warn("Retrieve: success retrieving key with utils.ToKey", "recipientPubKey", recipientPubKey, "senderPubKey", senderPubKey)
 	}
 
 	senderPrivKey, err = s.resolvePrivateKey(senderPubKey)
 	if err != nil {
+		log.Warn("Retrieve: error calling s.resolvePrivateKey", "err", err)
 		return nil, err
 	}
+	log.Warn("Retrieve: s.resolvePrivateKey successful", "senderPrivKey", senderPrivKey)"
 
 	// we might not have the key in our cache if constellation was restarted, hence we may
 	// need to recreate
 	sharedKey = s.resolveSharedKey(senderPrivKey, senderPubKey, recipientPubKey)
+	log.Warn("Retrieve: s.resolveSharedKey returned", "sharedKey", sharedKey)
 
 	_, ok := secretbox.Open(masterKey[:0], epl.RecipientBoxes[0], epl.RecipientNonce, sharedKey)
 	if !ok {
+		log.Warn("Retrieve: unable to open master key secret box", "err", err)
 		return nil, errors.New("unable to open master key secret box")
 	}
 
 	var payload []byte
+	log.Warn("Receive: Calling secretbox.Open for payload", "payload[:0]", payload[:0], "epl.CipherText", epl.CipherText, "epl.CipherText", epl.CipherText, "masterKey", masterKey)
 	payload, ok = secretbox.Open(payload[:0], epl.CipherText, epl.Nonce, masterKey)
 	if !ok {
+		log.Warn("Retrieve: unable to open payload secret box", "err", err)
 		return payload, errors.New("unable to open payload secret box")
 	}
 
+	log.Warn("Retrieve: returning payload", "payload", payload)
 	return payload, nil
 }
 
