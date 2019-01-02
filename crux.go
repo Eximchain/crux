@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/blk-io/crux/api"
 	"github.com/blk-io/crux/config"
 	"github.com/blk-io/crux/enclave"
@@ -59,6 +60,7 @@ func main() {
 	log.Printf("LOGTEST: Printf")
 	log.Errorf("LOGTEST: Errorf")
 	log.Error("LOGTEST: Error")
+	fmt.Println("LOGTEST2: fmt Print")
 
 	keyFile := config.GetString(config.GenerateKeys)
 	if keyFile != "" {

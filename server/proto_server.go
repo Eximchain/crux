@@ -66,6 +66,7 @@ func (tm *TransactionManager) startJsonServer(networkInterface string, port int,
 	log.Printf("LOGTEST2: Printf")
 	log.Errorf("LOGTEST2: Errorf")
 	log.Error("LOGTEST2: Error")
+	fmt.Println("LOGTEST2: fmt Print")
 	err = http.ListenAndServe(address, mux)
 	if err != nil {
 		return fmt.Errorf("could not listen on %s due to: %s", address, err)
