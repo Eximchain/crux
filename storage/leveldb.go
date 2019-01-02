@@ -55,6 +55,6 @@ func (db *levelDb) Delete(key *[]byte) error {
 }
 
 func (db *levelDb) Close() error {
-	log.Warn("db.Close call", "key", key)
+	log.Warn("db.Close call")
 	return db.conn.Close()
 }
