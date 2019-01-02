@@ -54,6 +54,11 @@ func main() {
 		level = log.DebugLevel
 	}
 	log.SetLevel(level)
+	log.Printf("Log Level Set!")
+	log.Warn("LOGTEST: Warn")
+	log.Printf("LOGTEST: Printf")
+	log.Errorf("LOGTEST: Errorf")
+	log.Error("LOGTEST: Error")
 
 	keyFile := config.GetString(config.GenerateKeys)
 	if keyFile != "" {

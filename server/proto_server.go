@@ -62,10 +62,10 @@ func (tm *TransactionManager) startJsonServer(networkInterface string, port int,
 		return fmt.Errorf("could not register service: %s", err)
 	}
 	log.Printf("starting HTTP/1.1 REST server on %s", address)
-	log.Warn("LOGTEST: Warn")
-	log.Printf("LOGTEST: Printf")
-	log.Errorf("LOGTEST: Errorf")
-	log.Error("LOGTEST: Error")
+	log.Warn("LOGTEST2: Warn")
+	log.Printf("LOGTEST2: Printf")
+	log.Errorf("LOGTEST2: Errorf")
+	log.Error("LOGTEST2: Error")
 	err = http.ListenAndServe(address, mux)
 	if err != nil {
 		return fmt.Errorf("could not listen on %s due to: %s", address, err)
