@@ -39,6 +39,8 @@ func Init(
 	pubKeyFiles, privKeyFiles []string,
 	pi api.PartyInfo,
 	client utils.HttpClient, grpc bool) *SecureEnclave {
+		log.Warn("Init Enclave")
+		fmt.Println("Init Enclave")
 
 	// Key format:
 	// BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=

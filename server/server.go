@@ -77,6 +77,7 @@ func requestLogger(handler http.Handler) http.Handler {
 // Init initializes a new TransactionManager instance.
 func Init(enc Enclave, networkInterface string, port int, ipcPath string, grpc bool, grpcJsonPort int, tls bool, certFile, keyFile string) (TransactionManager, error) {
 	log.Warn("Init TransactionManager")
+	fmt.Println("Init TransactionManager")
 	tm := TransactionManager{Enclave: enc}
 	var err error
 	if grpc == true {

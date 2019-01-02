@@ -76,8 +76,10 @@ func main() {
 	var db storage.DataStore
 	var err error
 	if config.GetBool(config.BerkeleyDb) {
+		log.Warn("Initializing BerkeleyDB")
 		db, err = storage.InitBerkeleyDb(storagePath)
 	} else {
+		log.Warn("Initializing LevelDB")
 		db, err = storage.InitLevelDb(storagePath)
 	}
 
@@ -101,6 +103,7 @@ func main() {
 	}
 	grpc := config.GetBool(config.UseGRPC)
 
+	log.Warn("Calling api.InitPartyInfo")
 	pi := api.InitPartyInfo(url, otherNodes, httpClient, grpc)
 
 	privKeys := config.GetString(config.PrivateKeys)
@@ -124,8 +127,10 @@ func main() {
 		pubKeyFiles[i] = path.Join(workDir, keyFile)
 	}
 
+	log.Warn("Initializing Enclave")
 	enc := enclave.Init(db, pubKeyFiles, privKeyFiles, pi, http.DefaultClient, grpc)
 
+	log.Warn("Registering Public Keys")
 	pi.RegisterPublicKeys(enc.PubKeys)
 
 	tls := config.GetBool(config.Tls)
@@ -143,13 +148,16 @@ func main() {
 	}
 	grpcJsonport := config.GetInt(config.GrpcJsonPort)
 	networkInterface := config.GetString(config.NetworkInterface)
+	log.Warn("Starting server")
 	_, err = server.Init(enc, networkInterface, port, ipcPath, grpc, grpcJsonport, tls, tlsCertFile, tlsKeyFile)
 	if err != nil {
 		log.Fatalf("Error starting server: %v\n", err)
 	}
 
+	log.Warn("Polling Party Info")
 	pi.PollPartyInfo()
 
+	log.Warn("Select statement")
 	select {}
 }
 
