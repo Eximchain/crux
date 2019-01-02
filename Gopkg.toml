@@ -63,3 +63,7 @@
 [[constraint]]
   name = "github.com/blk-io/chimera-api"
   revision = "ebd4db90873296427420c2fe2acec18c127b401d"
+
+[[constraint]]
+  name = "github.com/eximchain/crux"
+  branch = "debug-logging"
