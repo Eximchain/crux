@@ -39,8 +39,8 @@ func Init(
 	pubKeyFiles, privKeyFiles []string,
 	pi api.PartyInfo,
 	client utils.HttpClient, grpc bool) *SecureEnclave {
-		log.Warn("Init Enclave")
-		fmt.Println("Init Enclave")
+	log.Warn("Init Enclave")
+	fmt.Println("Init Enclave")
 
 	// Key format:
 	// BULeR8JyUWhiuuCMU/HLA0Q5pzkYT+cHII3ZKBey3Bo=
@@ -360,7 +360,7 @@ func (s *SecureEnclave) Retrieve(digestHash *[]byte, to *[]byte) ([]byte, error)
 		log.Warn("Retrieve: error calling s.resolvePrivateKey", "err", err)
 		return nil, err
 	}
-	log.Warn("Retrieve: s.resolvePrivateKey successful", "senderPrivKey", senderPrivKey)"
+	log.Warn("Retrieve: s.resolvePrivateKey successful", "senderPrivKey", senderPrivKey)
 
 	// we might not have the key in our cache if constellation was restarted, hence we may
 	// need to recreate
