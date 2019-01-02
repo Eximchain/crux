@@ -2,7 +2,7 @@
 
 <a href="https://clh7rniov2.execute-api.us-east-1.amazonaws.com/Express/" target="_blank" rel="noopener"><img title="Quorum Slack" src="https://clh7rniov2.execute-api.us-east-1.amazonaws.com/Express/badge.svg" alt="Quorum Slack" /></a>
 <a href="https://travis-ci.org/blk-io/crux/"><img title="Build Status" src="https://travis-ci.org/blk-io/crux.svg?branch=master" alt="Build Status" /></a>
-<a href="https://goreportcard.com/report/github.com/blk-io/crux"><img title="Go Report Card" src="https://goreportcard.com/badge/github.com/blk-io/crux" alt="Go Report Card" /></a>
+<a href="https://goreportcard.com/report/github.com/eximchain/crux"><img title="Go Report Card" src="https://goreportcard.com/badge/github.com/eximchain/crux" alt="Go Report Card" /></a>
 
 Data privacy for Quorum. 
 
@@ -16,11 +16,11 @@ secure enclave component of [Quorum](https://github.com/jpmorganchase/quorum/), 
 ### 4-node Quorum network with Crux
 
 The best way to start is to run the 
-[Quorum-Crux Docker image](https://github.com/blk-io/crux/tree/master/docker/quorum-crux). This 
+[Quorum-Crux Docker image](https://github.com/eximchain/crux/tree/master/docker/quorum-crux). This 
 image runs a 4 node Quorum network using Crux as the secure enclave communicating over gRPC. 
 
 ```bash
-git clone https://github.com/blk-io/crux.git
+git clone https://github.com/eximchain/crux.git
 docker-compose -f docker/quorum-crux/docker-compose.yaml up
 ```
 
@@ -35,11 +35,11 @@ Where the node details are as follows:
 
 ### 2-node Crux only-network
 
-[2 Crux nodes example](https://github.com/blk-io/crux/tree/master/docker/crux) is simple Docker 
+[2 Crux nodes example](https://github.com/eximchain/crux/tree/master/docker/crux) is simple Docker 
 image to just bring up 2 Crux nodes which communicate with each other.
 
 ```bash
-git clone https://github.com/blk-io/crux.git
+git clone https://github.com/eximchain/crux.git
 docker-compose -f docker/crux/docker-compose.yaml up
 ```
 
@@ -55,7 +55,7 @@ of JP Morgan's Quorum 7 Nodes example using Crux as the secure enclave.
 ### Download the latest binary
 
 The latest binaries for different platforms are available on the 
-[release](https://github.com/blk-io/crux/releases/latest) page.
+[release](https://github.com/eximchain/crux/releases/latest) page.
 
 ## Generating keys
 
@@ -88,7 +88,7 @@ If you'd prefer to run just a client, you can build using the below instructions
 the below.
 
 ```bash
-git clone https://github.com/blk-io/crux.git
+git clone https://github.com/eximchain/crux.git
 cd crux
 make setup && make
 ./bin/crux
@@ -134,7 +134,7 @@ demonstrated below.
 
 ## Logical architecture
 
-![Logical architecture](https://github.com/blk-io/crux/blob/master/docs/quorum-architecture.png)
+![Logical architecture](https://github.com/eximchain/crux/blob/master/docs/quorum-architecture.png)
 
 ## Why Crux?
 

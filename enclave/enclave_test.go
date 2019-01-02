@@ -2,9 +2,9 @@ package enclave
 
 import (
 	"bytes"
-	"github.com/blk-io/crux/api"
-	"github.com/blk-io/crux/storage"
-	"github.com/blk-io/crux/utils"
+	"github.com/eximchain/crux/api"
+	"github.com/eximchain/crux/storage"
+	"github.com/eximchain/crux/utils"
 	"github.com/kevinburke/nacl"
 	"io/ioutil"
 	"net/http"

@@ -1,7 +1,7 @@
 package api
 
 import (
-	"github.com/blk-io/crux/utils"
+	"github.com/eximchain/crux/utils"
 	"github.com/kevinburke/nacl"
 	"reflect"
 	"testing"
