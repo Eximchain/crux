@@ -12,14 +12,17 @@ type levelDb struct {
 }
 
 func InitLevelDb(dbPath string) (*levelDb, error) {
+	log.Warn("db.InitLevelDb call", "dbPath", dbPath)
 	db := new(levelDb)
 	db.dbPath = dbPath
 	var err error
 	db.conn, err = leveldb.OpenFile(dbPath, nil)
+	log.Warn("db.InitLevelDb File Opened", "db.conn", db.conn, "err", err)
 	return db, err
 }
 
 func (db *levelDb) Write(key *[]byte, value *[]byte) error {
+	log.Warn("db.Write call", "key", key, "value", value)
 	return db.conn.Put(*key, *value, nil)
 }
 
@@ -47,9 +50,11 @@ func (db *levelDb) ReadAll(f func(key, value *[]byte)) error {
 }
 
 func (db *levelDb) Delete(key *[]byte) error {
+	log.Warn("db.Delete call", "key", key)
 	return db.conn.Delete(*key, nil)
 }
 
 func (db *levelDb) Close() error {
+	log.Warn("db.Close call", "key", key)
 	return db.conn.Close()
 }
