@@ -61,5 +61,5 @@
   version = "1.4.0"
 
 [[constraint]]
-  name = "github.com/eximchain/chimera-api"
+  name = "github.com/blk-io/chimera-api"
   revision = "ebd4db90873296427420c2fe2acec18c127b401d"

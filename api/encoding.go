@@ -2,7 +2,7 @@ package api
 
 import (
 	"encoding/binary"
-	"github.com/eximchain/crux/utils"
+	"github.com/blk-io/crux/utils"
 	"github.com/kevinburke/nacl"
 )
 

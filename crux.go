@@ -2,11 +2,11 @@ package main
 
 import (
 	"fmt"
-	"github.com/eximchain/crux/api"
-	"github.com/eximchain/crux/config"
-	"github.com/eximchain/crux/enclave"
-	"github.com/eximchain/crux/server"
-	"github.com/eximchain/crux/storage"
+	"github.com/blk-io/crux/api"
+	"github.com/blk-io/crux/config"
+	"github.com/blk-io/crux/enclave"
+	"github.com/blk-io/crux/server"
+	"github.com/blk-io/crux/storage"
 	log "github.com/sirupsen/logrus"
 	"net/http"
 	"os"

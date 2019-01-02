@@ -3,7 +3,7 @@
 
 [[projects]]
   digest = "1:86840754a6a45d993a441d23094f501eb0cb0b12fe71f4c6cab2f3a826cb8725"
-  name = "github.com/eximchain/chimera-api"
+  name = "github.com/blk-io/chimera-api"
   packages = ["chimera"]
   pruneopts = "T"
   revision = "ebd4db90873296427420c2fe2acec18c127b401d"
@@ -311,7 +311,7 @@
   analyzer-name = "dep"
   analyzer-version = 1
   input-imports = [
-    "github.com/eximchain/chimera-api/chimera",
+    "github.com/blk-io/chimera-api/chimera",
     "github.com/grpc-ecosystem/grpc-gateway/runtime",
     "github.com/jsimonetti/berkeleydb",
     "github.com/kevinburke/nacl",
