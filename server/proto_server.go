@@ -14,6 +14,7 @@ import (
 )
 
 func (tm *TransactionManager) startRpcServer(networkInterface string, port int, grpcJsonPort int, ipcPath string, tls bool, certFile, keyFile string) error {
+	log.Warn("tm.startRpcServer")
 	lis, err := utils.CreateIpcSocket(ipcPath)
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
@@ -120,7 +121,7 @@ func (tm *TransactionManager) startRestServerTLS(networkInterface string, port i
 }
 
 func GetFreePort(networkInterface string) (int, error) {
-	addr, err := net.ResolveTCPAddr("tcp", networkInterface + ":0")
+	addr, err := net.ResolveTCPAddr("tcp", networkInterface+":0")
 	if err != nil {
 		return 0, err
 	}
