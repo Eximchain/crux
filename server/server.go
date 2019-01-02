@@ -76,6 +76,7 @@ func requestLogger(handler http.Handler) http.Handler {
 
 // Init initializes a new TransactionManager instance.
 func Init(enc Enclave, networkInterface string, port int, ipcPath string, grpc bool, grpcJsonPort int, tls bool, certFile, keyFile string) (TransactionManager, error) {
+	log.Warn("Init TransactionManager")
 	tm := TransactionManager{Enclave: enc}
 	var err error
 	if grpc == true {
@@ -108,6 +109,7 @@ func (tm *TransactionManager) startHttpserver(networkInterface string, port int,
 		log.Infof("HTTPS server is running at: %s", serverUrl)
 	} else {
 		go func() {
+			log.Warn("Creating HTTP Server")
 			log.Fatal(http.ListenAndServe(serverUrl, requestLogger(httpServer)))
 		}()
 		log.Infof("HTTP server is running at: %s", serverUrl)
@@ -123,6 +125,7 @@ func (tm *TransactionManager) startHttpserver(networkInterface string, port int,
 	ipcServer.HandleFunc(receiveRaw, tm.receiveRaw)
 	ipcServer.HandleFunc(delete, tm.delete)
 
+	log.Warn("Creating IPC Server")
 	ipc, err := utils.CreateIpcSocket(ipcPath)
 	if err != nil {
 		log.Fatalf("Failed to start IPC Server at %s", ipcPath)
@@ -145,14 +148,17 @@ func CheckCertFiles(certFile, keyFile string) error {
 }
 
 func (s *TransactionManager) upcheck(w http.ResponseWriter, req *http.Request) {
+	log.Warn("tm.upcheck")
 	fmt.Fprint(w, upCheckResponse)
 }
 
 func (s *TransactionManager) version(w http.ResponseWriter, req *http.Request) {
+	log.Warn("tm.version")
 	fmt.Fprint(w, apiVersion)
 }
 
 func (s *TransactionManager) send(w http.ResponseWriter, req *http.Request) {
+	log.Warn("tm.send")
 	var sendReq api.SendRequest
 	err := json.NewDecoder(req.Body).Decode(&sendReq)
 	req.Body.Close()
@@ -184,6 +190,7 @@ func (s *TransactionManager) send(w http.ResponseWriter, req *http.Request) {
 }
 
 func (s *TransactionManager) sendRaw(w http.ResponseWriter, req *http.Request) {
+	log.Warn("tm.sendRaw")
 
 	from := req.Header.Get(hFrom)
 
@@ -222,6 +229,7 @@ func (s *TransactionManager) processSend(
 	b64from string,
 	b64recipients []string,
 	payload *[]byte) ([]byte, error) {
+	log.Warn("tm.processSend")
 
 	log.WithFields(log.Fields{
 		"b64From":       b64from,
@@ -250,7 +258,7 @@ func (s *TransactionManager) processSend(
 }
 
 func (s *TransactionManager) receive(w http.ResponseWriter, req *http.Request) {
-	log.Warn("receive: request start")
+	log.Warn("tm.receive")
 	var receiveReq api.ReceiveRequest
 	err := json.NewDecoder(req.Body).Decode(&receiveReq)
 	req.Body.Close()
@@ -279,7 +287,7 @@ func (s *TransactionManager) receive(w http.ResponseWriter, req *http.Request) {
 }
 
 func (s *TransactionManager) receiveRaw(w http.ResponseWriter, req *http.Request) {
-	log.Warn("receiveRaw: request start")
+	log.Warn("tm.receiveRaw")
 
 	key := req.Header.Get(hKey)
 	log.Warn("receiveRaw: key retrieved", "key", key)
@@ -305,6 +313,7 @@ func (s *TransactionManager) receiveRaw(w http.ResponseWriter, req *http.Request
 
 func (s *TransactionManager) processReceive(
 	w http.ResponseWriter, req *http.Request, b64Key, b64To string) ([]byte, error) {
+	log.Warn("tm.processReceive")
 
 	key, err := base64.StdEncoding.DecodeString(b64Key)
 	if err != nil {
@@ -328,6 +337,7 @@ func (s *TransactionManager) processReceive(
 }
 
 func (s *TransactionManager) delete(w http.ResponseWriter, req *http.Request) {
+	log.Warn("tm.delete")
 	var deleteReq api.DeleteRequest
 	err := json.NewDecoder(req.Body).Decode(&deleteReq)
 	req.Body.Close()
@@ -347,6 +357,7 @@ func (s *TransactionManager) delete(w http.ResponseWriter, req *http.Request) {
 }
 
 func (s *TransactionManager) push(w http.ResponseWriter, req *http.Request) {
+	log.Warn("tm.push")
 	payload, err := ioutil.ReadAll(req.Body)
 	req.Body.Close()
 	if err != nil {
@@ -364,6 +375,7 @@ func (s *TransactionManager) push(w http.ResponseWriter, req *http.Request) {
 }
 
 func (s *TransactionManager) resend(w http.ResponseWriter, req *http.Request) {
+	log.Warn("tm.resend")
 	var resendReq api.ResendRequest
 	err := json.NewDecoder(req.Body).Decode(&resendReq)
 	req.Body.Close()
@@ -403,6 +415,7 @@ func (s *TransactionManager) resend(w http.ResponseWriter, req *http.Request) {
 }
 
 func (s *TransactionManager) partyInfo(w http.ResponseWriter, req *http.Request) {
+	log.Warn("tm.partyinfo")
 	payload, err := ioutil.ReadAll(req.Body)
 	req.Body.Close()
 	if err != nil {
