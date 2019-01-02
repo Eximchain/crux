@@ -2,7 +2,7 @@ package client
 
 import (
 	"encoding/base64"
-	"github.com/blk-io/chimera-api/chimera"
+	"github.com/eximchain/chimera-api/chimera"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"reflect"
