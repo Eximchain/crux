@@ -50,6 +50,7 @@ func (tm *TransactionManager) startRpcServer(networkInterface string, port int, 
 }
 
 func (tm *TransactionManager) startJsonServer(networkInterface string, port int, grpcJsonPort int) error {
+	log.Warn("tm.startJsonServer")
 	address := fmt.Sprintf("%s:%d", networkInterface, grpcJsonPort)
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
@@ -61,6 +62,10 @@ func (tm *TransactionManager) startJsonServer(networkInterface string, port int,
 		return fmt.Errorf("could not register service: %s", err)
 	}
 	log.Printf("starting HTTP/1.1 REST server on %s", address)
+	log.Warn("LOGTEST: Warn")
+	log.Printf("LOGTEST: Printf")
+	log.Errorf("LOGTEST: Errorf")
+	log.Error("LOGTEST: Error")
 	err = http.ListenAndServe(address, mux)
 	if err != nil {
 		return fmt.Errorf("could not listen on %s due to: %s", address, err)
@@ -69,6 +74,7 @@ func (tm *TransactionManager) startJsonServer(networkInterface string, port int,
 }
 
 func (tm *TransactionManager) startRestServer(networkInterface string, port int) error {
+	log.Warn("tm.startRestServer")
 	grpcAddress := fmt.Sprintf("%s:%d", networkInterface, port)
 	lis, err := net.Listen("tcp", grpcAddress)
 	if err != nil {
@@ -84,6 +90,7 @@ func (tm *TransactionManager) startRestServer(networkInterface string, port int)
 }
 
 func (tm *TransactionManager) startJsonServerTLS(networkInterface string, port int, grpcJsonPort int, certFile, keyFile, ca string) error {
+	log.Warn("tm.startJsonServerTLS")
 	address := fmt.Sprintf("%s:%d", networkInterface, grpcJsonPort)
 	ctx := context.Background()
 	ctx, cancel := context.WithCancel(ctx)
@@ -101,6 +108,7 @@ func (tm *TransactionManager) startJsonServerTLS(networkInterface string, port i
 }
 
 func (tm *TransactionManager) startRestServerTLS(networkInterface string, port int, certFile, keyFile, ca string) error {
+	log.Warn("tm.startRestServerTLS")
 	grpcAddress := fmt.Sprintf("%s:%d", networkInterface, port)
 	lis, err := net.Listen("tcp", grpcAddress)
 	if err != nil {
